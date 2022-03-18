@@ -8,19 +8,52 @@ namespace ConsoleUI
     internal class Program
     {
 
-        //SOLID
-        //Open Closed Principle
+        // SOLID
+        // Open Closed Principle
 
         static void Main(string[] args)
         {
-            InMemoryProductDal inMemoryProductDal=new InMemoryProductDal();
+            ProductTest();
+
+            // CategoryTest();
+
+
+
+        }
+
+        private static void CategoryTest()
+        {
+            EfCategoryDal efCategoryDal = new EfCategoryDal();
+
+            CategoryService categoryService = new CategoryService(efCategoryDal);
+
+            foreach (var c in efCategoryDal.GetAll())
+            {
+                Console.WriteLine(c.CategoryName);
+            }
+        }
+
+        private static void ProductTest()
+        {
+            InMemoryProductDal inMemoryProductDal = new InMemoryProductDal();
             EfProductDal efProductDal = new EfProductDal();
 
-            ProductManager productManager = new ProductManager(efProductDal);
+            ProductService productManager = new ProductService(efProductDal);
 
-            foreach (var product in productManager.GetByUnitPrice(10, 40))
+            var result = productManager.GetProductDetails();
+
+            if (result.Success == true)
             {
-                Console.WriteLine(product.ProductName);
+                foreach (var product in result.Data)
+                {
+                    Console.WriteLine(product.ProductName + " / " + product.CategoryName);
+                }
+
+                Console.WriteLine("\n" + result.Message);
+            }
+            else
+            {
+                Console.WriteLine(result.Message);
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace DataAccess.Concrete.InMemory
         public InMemoryProductDal()
         {
 
-         // Burası fake bir veritabanı görünümüdür.(Sql Server, Oracle, Postgres, MongoDB vb.).
+            // Burası fake bir veritabanı görünümüdür.(Sql Server, Oracle, Postgres, MongoDB vb.).
 
             _products = new List<Product>()
             {
@@ -77,6 +78,11 @@ namespace DataAccess.Concrete.InMemory
         }
 
         public Product Get(Expression<Func<Product, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<ProductDetailDto> GetProductDetails()
         {
             throw new NotImplementedException();
         }
