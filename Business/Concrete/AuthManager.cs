@@ -48,7 +48,7 @@ namespace Business.Concrete
                 return new ErrorDataResult<User>("Password Error");
             }
 
-            return new SuccessDataResult<User>(userToCheck, "Login Succesful");
+            return new SuccessDataResult<User>(userToCheck, "Login Successful");
         }
 
         public IResult UserExists(string email)

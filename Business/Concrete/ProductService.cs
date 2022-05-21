@@ -2,6 +2,8 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Business;
@@ -26,15 +28,17 @@ namespace Business.Concrete
         IProductDal _productDal;
         ICategoryService _categoryService;
 
-        public ProductService(IProductDal productDal)
+        public ProductService(IProductDal productDal, ICategoryService categoryService)
         {
             _productDal = productDal;
+            _categoryService = categoryService;
         }
 
 
         //Claim
-        [SecuredOperation("product.add,admin")]
+        [SecuredOperation("admin")]
         [ValidationAspect(typeof(ProductValidator))]
+        [CacheRemoveAspect("IProductService.Get")]
 
         public IResult Add(Product product)
         {
@@ -60,9 +64,11 @@ namespace Business.Concrete
 
         }
 
+
+        [CacheAspect]
         public IDataResult<List<Product>> GetAll()
         {
-            if (DateTime.Now.Hour == 02)
+            if (DateTime.Now.Year == 2000)
             {
                 return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
             }
@@ -73,7 +79,6 @@ namespace Business.Concrete
         public IDataResult<List<Product>> GetAllByCategory(int id)
         {
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == id));
-
         }
 
         public IDataResult<Product> GetById(int productId)
@@ -130,5 +135,11 @@ namespace Business.Concrete
             return new SuccessResult();
         }
 
+
+        [TransactionScopeAspect]
+        public IResult AddTransactionalText(Product product)
+        {
+            return null;
+        }
     }
 }

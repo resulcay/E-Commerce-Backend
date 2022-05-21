@@ -5,6 +5,7 @@ using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace WebAPI.Controllers
 {
@@ -30,13 +31,15 @@ namespace WebAPI.Controllers
 
             // IProductService productService = new ProductService(new EfProductDal());
 
+            Thread.Sleep(100);
+
             var result = _productService.GetAll();
 
             if (result.Success)
             {
                 return Ok(result); // Ok 200
             }
-            return BadRequest(result); // BadRequest 400
+            return BadRequest(result.Message); // BadRequest 400
 
         }
 
@@ -44,25 +47,51 @@ namespace WebAPI.Controllers
 
         public IActionResult GetById(int id)
         {
-            var result2 = _productService.GetById(id);
-            if (result2.Success)
+            var result = _productService.GetById(id);
+            if (result.Success)
             {
-                return Ok(result2);
+                return Ok(result);
             }
-            return BadRequest(result2);
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("getallbycategoryid")]
+
+        public IActionResult GetAllByCategoryId(int categoryId)
+        {
+            var result = _productService.GetAllByCategory(categoryId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result.Message);
+        }
+
+        [HttpGet("productdto")]
+
+        public IActionResult GetProductDto()
+        {
+            var result = _productService.GetProductDetails();
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+
+            return BadRequest(result.Message);
         }
 
         [HttpPost("add")]
 
         public IActionResult Post(Product product)
         {
-            var result3 = _productService.Add(product);
-            if (result3.Success)
+            var result = _productService.Add(product);
+            if (result.Success)
             {
-                return Ok(result3);
+                return Ok(result);
 
             }
-            return BadRequest(result3);
+            return BadRequest(result.Message);
         }
     }
 }

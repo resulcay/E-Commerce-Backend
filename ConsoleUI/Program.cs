@@ -17,8 +17,6 @@ namespace ConsoleUI
 
             // CategoryTest();
 
-
-
         }
 
         private static void CategoryTest()
@@ -38,23 +36,23 @@ namespace ConsoleUI
             InMemoryProductDal inMemoryProductDal = new InMemoryProductDal();
             EfProductDal efProductDal = new EfProductDal();
 
-            ProductService productManager = new ProductService(efProductDal);
+            //  ProductService productManager = new ProductService(efProductDal);
 
-            var result = productManager.GetProductDetails();
+            // var result = productManager.GetProductDetails();
 
-            if (result.Success == true)
-            {
-                foreach (var product in result.Data)
-                {
-                    Console.WriteLine(product.ProductName + " / " + product.CategoryName);
-                }
+            //if (result.Success == true)
+            //{
+            //    foreach (var product in result.Data)
+            //    {
+            //        Console.WriteLine(product.ProductName + " / " + product.CategoryName);
+            //    }
 
-                Console.WriteLine("\n" + result.Message);
-            }
-            else
-            {
-                Console.WriteLine(result.Message);
-            }
+            //    Console.WriteLine("\n" + result.Message);
+            //}
+            //else
+            //{
+            //    Console.WriteLine(result.Message);
+            //}
         }
     }
 }
